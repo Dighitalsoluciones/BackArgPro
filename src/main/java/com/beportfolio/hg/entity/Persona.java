@@ -31,6 +31,6 @@ public class Persona {
     private String ubicacion;
     
     @NotNull
-    @Size(min = 1, max = 100, message = "No cumple con el tamaño asignado")
+    @Size(min = 1, max = 400, message = "No cumple con el tamaño asignado")
     private String img;
 }
