@@ -25,10 +25,11 @@ public class UsuarioPrincipal implements UserDetails {
     }
 
     public static UsuarioPrincipal build(Usuario usuario) {
-        List<GrantedAuthority> authorities = usuario.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol.getRolNombre().name())).collect(Collectors
+        List<GrantedAuthority> authorities = usuario.getRoles().stream()
+                .map(rol -> new SimpleGrantedAuthority(rol.getRolNombre().name())).collect(Collectors
                 .toList());
-        return new UsuarioPrincipal(usuario.getNombre(), usuario.getNombreUsuario(), usuario.getEmail(),
-                 usuario.getPassword(), authorities);
+        return new UsuarioPrincipal(usuario.getNombre(), usuario.getNombreUsuario(), usuario.getEmail()
+                 , usuario.getPassword(), authorities);
     }
 
     @Override
