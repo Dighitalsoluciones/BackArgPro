@@ -50,7 +50,7 @@ public class CExperiencia {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody dtoExperiencia dtoexp){
         if(!sExperiencia.existsById(id))
-            return new ResponseEntity(new Mensaje("Id no valido"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.BAD_REQUEST);
         
         if(sExperiencia.existsByNombreExp(dtoexp.getNombreExp()) && sExperiencia.getByNombreExp(dtoexp.getNombreExp()).get().getId() != id)
             return new ResponseEntity(new Mensaje("Experiencia ya existente"), HttpStatus.BAD_REQUEST);
@@ -65,4 +65,13 @@ public class CExperiencia {
         sExperiencia.save(experiencia);
         return new ResponseEntity(new Mensaje("Experiencia actualizada correctamente"), HttpStatus.OK);
     }
+    
+   public ResponseEntity<?> delete(@PathVariable("id") int id){
+       if(!sExperiencia.existsById(id))
+           return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.BAD_REQUEST);
+       
+       sExperiencia.delete(id);
+       
+       return new ResponseEntity(new Mensaje("La experiencia ha sido eliminada correctamente"), HttpStatus.OK);
+   }
 }
