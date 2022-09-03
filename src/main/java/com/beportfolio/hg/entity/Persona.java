@@ -1,6 +1,7 @@
 
 package com.beportfolio.hg.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class Persona {
     @Size(min = 1, max = 50, message = "No cumple con el tamaño asignado")
     private String ubicacion;
     
-    @NotNull
-    @Size(min = 1, max = 400, message = "No cumple con el tamaño asignado")
+    @Size(min = 1, max = 450, message = "No cumple con el tamaño asignado")
+    @Column(name = "img", nullable = false, length = 450)
     private String img;
 }
