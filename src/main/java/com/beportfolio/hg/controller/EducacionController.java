@@ -1,0 +1,112 @@
+package com.beportfolio.hg.controller;
+
+import com.beportfolio.hg.dto.dtoEducacion;
+import com.beportfolio.hg.entity.Educacion;
+import com.beportfolio.hg.security.controller.Mensaje;
+import com.beportfolio.hg.service.SEducacion;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/educacion")
+@CrossOrigin(origins = "http://localhost:4200")
+public class EducacionController {
+
+    @Autowired()
+    SEducacion sEducacion;
+
+    @GetMapping("/lista")
+    public ResponseEntity<List<Educacion>> list() {
+        List<Educacion> list = sEducacion.list();
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+        if (!sEducacion.existsById(id)) {
+            return new ResponseEntity(new Mensaje("Id Inexistente"), HttpStatus.NOT_FOUND);
+        }
+        sEducacion.delete(id);
+        return new ResponseEntity(new Mensaje("Objeto eliminado correctamente"), HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody dtoEducacion dtoeducacion) {
+        if (StringUtils.isBlank(dtoeducacion.getTitulo())) {
+            return new ResponseEntity(new Mensaje("Nombre Obligatorio"), HttpStatus.BAD_REQUEST);
+        }
+        if (StringUtils.isBlank(dtoeducacion.getCentroeduc())) {
+            return new ResponseEntity(new Mensaje("Nombre del centro educativo obligatorio"), HttpStatus.BAD_REQUEST);
+        }
+        if (StringUtils.isBlank(dtoeducacion.getDesde())) {
+            return new ResponseEntity(new Mensaje("Fecha de comienzo obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if (StringUtils.isBlank(dtoeducacion.getHasta())) {
+            return new ResponseEntity(new Mensaje("Fecha de finalizacion obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if (StringUtils.isBlank(dtoeducacion.getUbicacion())) {
+            return new ResponseEntity(new Mensaje("Ubicacion del centro educativo obligatorio"), HttpStatus.BAD_REQUEST);
+
+        }
+        if (sEducacion.existByTitulo(dtoeducacion.getTitulo())) {
+            return new ResponseEntity(new Mensaje("Titulo ya existente"), HttpStatus.BAD_REQUEST);
+        }
+
+        Educacion educacion = new Educacion(
+                dtoeducacion.getTitulo(), dtoeducacion.getCentroeduc(), dtoeducacion.getDesde(), dtoeducacion.getHasta(),
+                dtoeducacion.getLogo(), dtoeducacion.getUbicacion());
+        sEducacion.save(educacion);
+        return new ResponseEntity(new Mensaje("Nuevo objeto creado exitosamente"), HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody dtoEducacion dtoeducacion){
+        if(!sEducacion.existsById(id)){
+            return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.NOT_FOUND);
+        }
+        if(sEducacion.existByTitulo(dtoeducacion.getTitulo()) && sEducacion.
+                getByTitulo(dtoeducacion.getTitulo()).get().getId() != id){
+        return new ResponseEntity(new Mensaje("Nombre existente"), HttpStatus.BAD_REQUEST);
+    }
+        if(StringUtils.isBlank(dtoeducacion.getTitulo())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(dtoeducacion.getCentroeduc())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(dtoeducacion.getDesde())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(dtoeducacion.getHasta())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(dtoeducacion.getUbicacion())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        
+        Educacion educacion = sEducacion.getOne(id).get();
+        
+        educacion.setTitulo(dtoeducacion.getTitulo());
+        educacion.setCentroeduc(dtoeducacion.getCentroeduc());
+        educacion.setDesde(dtoeducacion.getDesde());
+        educacion.setHasta(dtoeducacion.getHasta());
+        educacion.setLogo(dtoeducacion.getLogo());
+        educacion.setUbicacion(dtoeducacion.getUbicacion());
+        
+        sEducacion.save(educacion);
+        
+        return new ResponseEntity(new Mensaje("Objeto actulizado correctamente"), HttpStatus.OK);
+    }
+}
