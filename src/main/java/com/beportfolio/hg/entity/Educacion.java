@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,23 +23,18 @@ public class Educacion {
     private String logo;
     
     @NotNull
-    @Size(min = 1, max = 100, message = "No cumple con el tamaño asignado")
     private String titulo;
     
     @NotNull
-    @Size(min = 1, max = 100, message = "No cumple con el tamaño asignado")
     private String centroeduc;
     
     @NotNull
-    @Size(min = 1, max = 100, message = "No cumple con el tamaño asignado")
     private String desde;
     
     @NotNull
-    @Size(min = 1, max = 100, message = "No cumple con el tamaño asignado")
     private String hasta;
     
     @NotNull
-    @Size(min = 1, max = 100, message = "No cumple con el tamaño asignado")
     private String ubicacion;
     
     //Constructores

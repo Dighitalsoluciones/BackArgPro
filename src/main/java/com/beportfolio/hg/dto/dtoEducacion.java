@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 public class dtoEducacion {
     @NotBlank
-    private String titulo;
-    @NotBlank
     private String logo;
+    @NotBlank
+    private String titulo;
     @NotBlank
     private String centroeduc;
     @NotBlank
@@ -26,9 +26,9 @@ public class dtoEducacion {
     public dtoEducacion() {
     }
 
-    public dtoEducacion(String titulo, String logo, String centroeduc, String desde, String hasta, String ubicacion) {
+    public dtoEducacion(String logo, String titulo, String centroeduc, String desde, String hasta, String ubicacion) {
+        this.logo = logo;  
         this.titulo = titulo;
-        this.logo = logo;
         this.centroeduc = centroeduc;
         this.desde = desde;
         this.hasta = hasta;

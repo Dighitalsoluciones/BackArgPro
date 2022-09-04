@@ -32,6 +32,15 @@ public class EducacionController {
         List<Educacion> list = sEducacion.list();
         return new ResponseEntity(list, HttpStatus.OK);
     }
+    
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<Educacion> geyById(@PathVariable("id") int id){
+        if(!sEducacion.existsById(id)){
+            return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.BAD_REQUEST);
+        }
+        Educacion educacion = sEducacion.getOne(id).get();
+        return new ResponseEntity(educacion,HttpStatus.OK);
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
@@ -44,8 +53,12 @@ public class EducacionController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody dtoEducacion dtoeducacion) {
+        if (StringUtils.isBlank(dtoeducacion.getLogo())) {
+            return new ResponseEntity(new Mensaje("Logo Obligatorio"), HttpStatus.BAD_REQUEST);
+        }
+        
         if (StringUtils.isBlank(dtoeducacion.getTitulo())) {
-            return new ResponseEntity(new Mensaje("Nombre Obligatorio"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Titulo Obligatorio"), HttpStatus.BAD_REQUEST);
         }
         if (StringUtils.isBlank(dtoeducacion.getCentroeduc())) {
             return new ResponseEntity(new Mensaje("Nombre del centro educativo obligatorio"), HttpStatus.BAD_REQUEST);
@@ -65,8 +78,8 @@ public class EducacionController {
         }
 
         Educacion educacion = new Educacion(
-                dtoeducacion.getTitulo(), dtoeducacion.getCentroeduc(), dtoeducacion.getDesde(), dtoeducacion.getHasta(),
-                dtoeducacion.getLogo(), dtoeducacion.getUbicacion());
+                dtoeducacion.getLogo(), dtoeducacion.getTitulo(), dtoeducacion.getCentroeduc(), dtoeducacion.getDesde(), dtoeducacion.getHasta(),
+                dtoeducacion.getUbicacion());
         sEducacion.save(educacion);
         return new ResponseEntity(new Mensaje("Nuevo objeto creado exitosamente"), HttpStatus.OK);
     }
@@ -80,6 +93,10 @@ public class EducacionController {
                 getByTitulo(dtoeducacion.getTitulo()).get().getId() != id){
         return new ResponseEntity(new Mensaje("Nombre existente"), HttpStatus.BAD_REQUEST);
     }
+        if(StringUtils.isBlank(dtoeducacion.getLogo())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        
         if(StringUtils.isBlank(dtoeducacion.getTitulo())){
             return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
         }
@@ -98,15 +115,15 @@ public class EducacionController {
         
         Educacion educacion = sEducacion.getOne(id).get();
         
+        educacion.setLogo(dtoeducacion.getLogo());
         educacion.setTitulo(dtoeducacion.getTitulo());
         educacion.setCentroeduc(dtoeducacion.getCentroeduc());
         educacion.setDesde(dtoeducacion.getDesde());
         educacion.setHasta(dtoeducacion.getHasta());
-        educacion.setLogo(dtoeducacion.getLogo());
         educacion.setUbicacion(dtoeducacion.getUbicacion());
         
         sEducacion.save(educacion);
         
-        return new ResponseEntity(new Mensaje("Objeto actulizado correctamente"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Objeto actualizado correctamente"), HttpStatus.OK);
     }
 }
