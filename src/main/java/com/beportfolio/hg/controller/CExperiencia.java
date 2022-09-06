@@ -42,7 +42,8 @@ public class CExperiencia {
         if(sExperiencia.existsByNombreExp(dtoexp.getNombreExp()))
             return new ResponseEntity(new Mensaje("Esa experiencia existe"), HttpStatus.BAD_REQUEST);
         
-        Experiencia experiencia = new Experiencia(dtoexp.getNombreExp(), dtoexp.getDescripcionExp());
+        Experiencia experiencia = new Experiencia(dtoexp.getNombreExp(), dtoexp.getDescripcionExp(),dtoexp.getLogoExp(),
+                dtoexp.getDesdeExp(), dtoexp.getHastaExp());
         sExperiencia.save(experiencia);
         
         return new ResponseEntity(new Mensaje("Nueva experiencia agregada"), HttpStatus.OK);
@@ -67,11 +68,28 @@ public class CExperiencia {
             return new ResponseEntity(new Mensaje("Experiencia ya existente"), HttpStatus.BAD_REQUEST);
         
         if(StringUtils.isBlank(dtoexp.getNombreExp()))
-            return new ResponseEntity(new Mensaje("Nombre obligatorio"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Nombre obligatorio"), HttpStatus.BAD_REQUEST);{
+        }
+            
+        if(StringUtils.isBlank(dtoexp.getDescripcionExp()))
+            return new ResponseEntity(new Mensaje("Descripcion obligatoria"), HttpStatus.BAD_REQUEST);{
+        
+        }
+            
+         if(StringUtils.isBlank(dtoexp.getDesdeExp()))
+            return new ResponseEntity(new Mensaje("Fecha desde obligatoria"), HttpStatus.BAD_REQUEST);{
+        }   
+        
+         if(StringUtils.isBlank(dtoexp.getHastaExp()))
+            return new ResponseEntity(new Mensaje("Fecha hasta obligatoria"), HttpStatus.BAD_REQUEST);{
+        }    
         
         Experiencia experiencia = sExperiencia.getOne(id).get();
         experiencia.setNombreExp(dtoexp.getNombreExp());
         experiencia.setDescripcionExp((dtoexp.getDescripcionExp()));
+        experiencia.setLogoExp((dtoexp.getLogoExp()));
+        experiencia.setDesdeExp((dtoexp.getDesdeExp()));
+        experiencia.setHastaExp((dtoexp.getHastaExp()));
         
         sExperiencia.save(experiencia);
         return new ResponseEntity(new Mensaje("Experiencia actualizada correctamente"), HttpStatus.OK);
