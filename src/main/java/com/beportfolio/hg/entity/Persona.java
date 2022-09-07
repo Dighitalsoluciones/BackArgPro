@@ -34,4 +34,7 @@ public class Persona {
     @Size(min = 1, max = 450, message = "No cumple con el tamaño asignado")
     @Column(name = "img", nullable = false, length = 450)
     private String img;
+    
+    @Column(name = "fondo", nullable = false, length = 450)
+    private String fondo;
 }
