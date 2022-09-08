@@ -57,6 +57,7 @@ public class PersonaController {
         persona.setImg(nuevoImg);
         persona.setFondo(nuevoFondo);
         
+        
         ipersonaService.savePersona(persona);
         return persona;
     }

@@ -37,4 +37,5 @@ public class Persona {
     
     @Column(name = "fondo", nullable = false, length = 450)
     private String fondo;
+    
 }
