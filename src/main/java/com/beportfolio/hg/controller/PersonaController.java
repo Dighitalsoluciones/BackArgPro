@@ -2,8 +2,13 @@ package com.beportfolio.hg.controller;
 
 import com.beportfolio.hg.entity.Persona;
 import com.beportfolio.hg.Interface.IPersonaService;
+import com.beportfolio.hg.dto.dtoPersona;
+import com.beportfolio.hg.security.controller.Mensaje;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class PersonaController {
-    @Autowired IPersonaService ipersonaService;
+    @Autowired 
+    IPersonaService ipersonaService;
    
     
     @GetMapping("personas/traer")
@@ -66,5 +72,42 @@ public class PersonaController {
     @GetMapping("/personas/traer/perfil")
     public Persona findPersona(){
         return ipersonaService.findPersona((long)3);
+    }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody dtoPersona dtopersona){
+        if(!ipersonaService.existsById(id)){
+            return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.NOT_FOUND);
+        }
+        if(ipersonaService.existByNombre(dtopersona.getNombre()) && ipersonaService.
+                getByNombre(dtopersona.getNombre()).get().getId() != id){
+        return new ResponseEntity(new Mensaje("Nombre existente"), HttpStatus.BAD_REQUEST);
+    }
+   
+        if(StringUtils.isBlank(dtopersona.getImg())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(dtopersona.getFondo())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+        
+        
+        Persona persona = ipersonaService.getOne(id).get();
+        
+        persona.setImg(dtopersona.getImg());
+        persona.setFondo(dtopersona.getFondo());
+        
+        ipersonaService.savePersona(persona);
+        
+        return new ResponseEntity(new Mensaje("Objeto actualizado correctamente"), HttpStatus.OK);
+    }
+    
+     @GetMapping("/detail/{id}")
+    public ResponseEntity<Persona> geyById(@PathVariable("id") Long id){
+        if(!ipersonaService.existsById(id)){
+            return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.BAD_REQUEST);
+        }
+        Persona persona = ipersonaService.getOne(id).get();
+        return new ResponseEntity(persona,HttpStatus.OK);
     }
 }
