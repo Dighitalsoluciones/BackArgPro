@@ -74,7 +74,7 @@ public class PersonaController {
         return ipersonaService.findPersona((long)3);
     }
     
-    @PutMapping("/update/{id}")
+    @PutMapping("/personas/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody dtoPersona dtopersona){
         if(!ipersonaService.existsById(id)){
             return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.NOT_FOUND);
@@ -84,16 +84,13 @@ public class PersonaController {
         return new ResponseEntity(new Mensaje("Nombre existente"), HttpStatus.BAD_REQUEST);
     }
    
-        if(StringUtils.isBlank(dtopersona.getImg())){
-            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
-        }
-        if(StringUtils.isBlank(dtopersona.getFondo())){
-            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
-        }
-        
+              
         
         Persona persona = ipersonaService.getOne(id).get();
         
+        persona.setNombre(dtopersona.getNombre());
+        persona.setTitulo(dtopersona.getTitulo());
+        persona.setUbicacion(dtopersona.getUbicacion());
         persona.setImg(dtopersona.getImg());
         persona.setFondo(dtopersona.getFondo());
         
@@ -102,7 +99,7 @@ public class PersonaController {
         return new ResponseEntity(new Mensaje("Objeto actualizado correctamente"), HttpStatus.OK);
     }
     
-     @GetMapping("/detail/{id}")
+     @GetMapping("/personas/detail/{id}")
     public ResponseEntity<Persona> geyById(@PathVariable("id") Long id){
         if(!ipersonaService.existsById(id)){
             return new ResponseEntity(new Mensaje("Id inexistente"), HttpStatus.BAD_REQUEST);
