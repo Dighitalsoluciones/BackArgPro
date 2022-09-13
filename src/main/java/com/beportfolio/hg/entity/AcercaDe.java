@@ -16,7 +16,7 @@ public class AcercaDe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Value("Descripcion personal")
+   
     private String sobremi;
 
    //constructor
