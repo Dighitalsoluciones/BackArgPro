@@ -11,13 +11,17 @@ public class dtoAcercaDe {
     @NotBlank
     private String sobremi;
     
+     @NotBlank
+    private Boolean boton;
+    
      //constructor
 
     public dtoAcercaDe() {
     }
 
-    public dtoAcercaDe(String sobremi) {
+    public dtoAcercaDe(String sobremi, Boolean boton) {
         this.sobremi = sobremi;
+        this.boton = boton;
     }
     
     
