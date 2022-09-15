@@ -60,6 +60,9 @@ public class AcercaDeController {
         if (StringUtils.isBlank(dtoacercade.getSobremi())) {
             return new ResponseEntity(new Mensaje("Campo Obligatorio"), HttpStatus.BAD_REQUEST);
         }
+        if (StringUtils.isBlank(dtoacercade.getBoton())) {
+            return new ResponseEntity(new Mensaje("Campo Obligatorio"), HttpStatus.BAD_REQUEST);
+        }
         
                
         if (sAcercaDe.existBySobremi(dtoacercade.getSobremi())) {
@@ -67,7 +70,7 @@ public class AcercaDeController {
         }
 
         AcercaDe acercade = new AcercaDe(
-                dtoacercade.getSobremi());
+                dtoacercade.getSobremi(), dtoacercade.getBoton());
         sAcercaDe.save(acercade);
         return new ResponseEntity(new Mensaje("Nuevo objeto creado exitosamente"), HttpStatus.OK);
     }
@@ -85,10 +88,13 @@ public class AcercaDeController {
         if(StringUtils.isBlank(dtoacercade.getSobremi())){
             return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
         }
+        if(StringUtils.isBlank(dtoacercade.getBoton())){
+            return new ResponseEntity(new Mensaje("El campo no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
           
         AcercaDe acercade = sAcercaDe.getOne(id).get();
         
-        acercade.setSobremi(dtoacercade.getSobremi());
+        acercade.setSobremi(dtoacercade.getSobremi(), dtoacercade.getBoton);
       
         sAcercaDe.save(acercade);
         
