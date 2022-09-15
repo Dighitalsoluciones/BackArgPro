@@ -18,14 +18,17 @@ public class AcercaDe {
     private int id;
    
     private String sobremi;
+    
+    private Boolean boton;
 
    //constructor
 
     public AcercaDe() {
     }
 
-    public AcercaDe(String sobremi) {
+    public AcercaDe(String sobremi, Boolean boton) {
         this.sobremi = sobremi;
+        this.boton = boton;
     }
     
 }
