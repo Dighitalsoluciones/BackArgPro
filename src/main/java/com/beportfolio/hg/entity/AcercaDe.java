@@ -19,16 +19,16 @@ public class AcercaDe {
    
     private String sobremi;
     
-    private Boolean boton;
+   
 
    //constructor
 
     public AcercaDe() {
     }
 
-    public AcercaDe(String sobremi, Boolean boton) {
+    public AcercaDe(String sobremi) {
         this.sobremi = sobremi;
-        this.boton = boton;
+     
     }
     
 }
